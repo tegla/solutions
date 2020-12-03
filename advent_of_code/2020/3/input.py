@@ -14,6 +14,10 @@ class M:
     def slope(self, right, down):
         assert right > 0, right
         assert down > 0, down
+        # There are two off-by-one issues here that cancel each other
+        # - we're using 0-indexes, so (1,1) is the second row, second column
+        # - the path starts at the left topmost position, thus the first
+        #   step of a path with "3 right" is on the fourth column
         row = down
         col = right
         while row < m.h:
