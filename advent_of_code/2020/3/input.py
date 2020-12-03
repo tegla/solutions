@@ -11,15 +11,15 @@ class M:
         # explicitly no assert on max col!
         return self.ls[row][col%self.w]
 
-    def slope(self, rowstep, colstep):
-        assert rowstep > 0, rowstep
-        assert colstep > 0, colstep
-        row = rowstep
-        col = colstep
+    def slope(self, right, down):
+        assert right > 0, right
+        assert down > 0, down
+        row = down
+        col = right
         while row < m.h:
             yield self(row,col)
-            row += rowstep
-            col += colstep
+            row += down
+            col += right
 
 with open('/tmp/input.txt') as f:
     m = M(f)
