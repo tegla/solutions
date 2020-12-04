@@ -5,7 +5,7 @@ def flattened():
             for d in l.split(' '):
                 yield d
 
-def dicted():
+def ps():
     d = {}
     for l in flattened():
         if l == '':
@@ -17,5 +17,4 @@ def dicted():
     if len(d) > 0:
         yield d
 
-ps = dicted()
 keys = set(['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid'])

@@ -1,7 +1,7 @@
 import input
 
 valid = 0
-for p in input.ps:
+for p in input.ps():
     ks = set(p.keys())
     if 'cid' in ks:
         ks.remove('cid')
