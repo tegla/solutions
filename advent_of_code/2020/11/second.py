@@ -14,17 +14,26 @@ class Seating:
         else:
             return self.plan[row][col]
 
+    def see(self, row, col, drow, dcol):
+        while True:
+            row+=drow
+            col+=dcol
+            if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+                return '.'
+            seen = self.at(row,col)
+            if seen != '.':
+                return seen
+
     def surround_occupation(self, row, col):
-        directions = [(-1, -1), (-1, 0), (-1, 1), (0, 1),
-                      (1, 1), (1, 0), (1, -1), (0, -1)]
-        return [self.at(row+drow, col+dcol) for drow, dcol in directions].count('#')
+        directions = [(-1,-1), (-1,0), (-1,1), (0, 1), (1,1),(1,0),(1,-1), (0,-1)]
+        return [self.see(row,col, drow, dcol) for drow, dcol in directions].count('#')
 
     def recompute(self, prev):
         for row in range(0, self.rows):
             for col in range(0, self.cols):
                 if prev.at(row, col) == 'L' and prev.surround_occupation(row, col) == 0:
                     self.plan[row][col] = '#'
-                elif prev.at(row, col) == '#' and prev.surround_occupation(row, col) >= 4:
+                elif prev.at(row, col) == '#' and prev.surround_occupation(row, col) >= 5:
                     self.plan[row][col] = 'L'
 
     def total_occupied(self):
