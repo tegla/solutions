@@ -47,10 +47,15 @@ def minus(a,b):
     tm = minus(ta,tb)
     if ha == hb:
         return setconcat(ha, tm)
-    elif ha == 'X' and hb == '0':
-        return set(['1' + ta]).union(setconcat('X', tm))
-    elif ha == 'X' and hb == '1':
-        return set(['0' + ta]).union(setconcat('X', tm))
+    elif ha == 'X':
+        if {ta} == tm:
+            return {'X' + ta}
+        elif hb == '1':
+            return set(['0' + ta]).union(setconcat('1', tm))
+        elif hb == '0':
+            return set(['1' + ta]).union(setconcat('0', tm))
+        else:
+            assert False
     elif ha == '1' and hb == 'X':
         return setconcat('1', tm)
     elif ha == '0' and hb == 'X':
@@ -63,7 +68,7 @@ def minus(a,b):
         assert False, (a,b)
 
 assert minus('X1101X','01X0XX') == {'11101X'}
-assert minus('XXX', '000') == {'1XX', 'X1X', 'XX1'}
+assert minus('XXX', '000') == {'001', '01X', '1XX'}
 
 def setminus(xs, b):
     return reduce(lambda res,x: res.union(minus(x,b)), xs, set())
@@ -80,11 +85,9 @@ for mask, mems in ops:
         print(v,sm)
         for otherv in memory.keys():
             memory[otherv] = setminus(memory[otherv], sm)
-            #print(otherv, memory[otherv])
         if v in memory:
             memory[v] = memory[v].union({sm})
         else:
             memory[v] = {sm}
 
 print(sum([countset(m)*v for v,m in memory.items()]))
-
