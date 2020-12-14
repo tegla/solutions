@@ -1,5 +1,5 @@
-from collections import defaultdict
 import re
+
 
 def parse():
     with open('/tmp/input.txt') as f:
@@ -20,9 +20,10 @@ def parse():
 
 ops = list(parse())
 
+
 def submask(mask, num):
     res = []
-    for (m,n) in zip(mask, '{0:036b}'.format(num)):
+    for (m, n) in zip(mask, '{0:036b}'.format(num)):
         if m == '0':
             res.append(n)
         elif m == '1':
@@ -31,8 +32,12 @@ def submask(mask, num):
             res.append('X')
     return ''.join(res)
 
-assert submask('000000000000000000000000000000X1001X', 42) == '000000000000000000000000000000X1101X'
-assert submask('00000000000000000000000000000000X0XX', 26) == '00000000000000000000000000000001X0XX'
+
+assert submask('000000000000000000000000000000X1001X',
+               42) == '000000000000000000000000000000X1101X'
+assert submask('00000000000000000000000000000000X0XX',
+               26) == '00000000000000000000000000000001X0XX'
+
 
 def addresses(mask):
     if mask == '':
@@ -45,13 +50,16 @@ def addresses(mask):
         for a in addresses(mask[1:]):
             yield 2**(len(mask)-1) + a
 
-memory = defaultdict(lambda:0)
+
+assert set(addresses('1X1')) == {5, 7}
+
+memory = dict()
 
 for mask, mems in ops:
     print("mask ", mask)
     for addr, v in mems:
         sm = submask(mask, addr)
-        print(sm,v)
+        print(sm, v)
         for a in addresses(sm):
             memory[a] = v
 
