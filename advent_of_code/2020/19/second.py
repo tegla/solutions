@@ -13,7 +13,7 @@ with open('/tmp/input.txt') as f:
         rs = rs.strip()
         n = int(n)
         if rs[0] == '"':
-            rs = rs[1]
+            rs = [rs[1]]
         else:
             rs = rs.strip().split("|")
             rs = [list(map(int, r.strip().split(" "))) for r in rs]
@@ -27,16 +27,14 @@ rules[11] = [[42, 31], [42, 11, 31]]
 
 
 def goodmessage(m):
-    # string position, rule_nr -> lens
+    # string position, rule_nr -> set of lengths that match
     matches = defaultdict(set)
 
-    for n, rs in rules.items():
-        if isinstance(rs, str):
-            for i in range(0, len(m)):
-                if m[i: i+len(rs)] == rs:
-                    matches[(i, n)].add(len(rs))
-
     def MatchRuleListLen(i, rl):
+        if isinstance(rl, str):
+            if m[i:i+len(rl)] == rl:
+                yield len(rl)
+            return
         if len(rl) == 0:
             yield 0
             return
