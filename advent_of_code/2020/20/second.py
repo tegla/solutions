@@ -78,8 +78,6 @@ nomatch = [e for e, ns in edge_to_tile.items() if len(ns) == 1]
 def ptrs(trs):
     return ",".join([tr.__name__ for tr in trs])
 
-# Now build the new map
-
 
 def match(n, trs, side, otherside):
     e = edge(tiles[n], trs, side)
@@ -102,6 +100,7 @@ for topleft, t in tiles.items():
         if edge(tiles[topleft], topleft_trs, TOP) in nomatch and edge(tiles[topleft], topleft_trs, LEFT) in nomatch:
             print("Using topleft TRS:", ptrs(trs))
 
+            # Now build the new map with this orientation
             m = []
             left = topleft
             left_trs = topleft_trs
@@ -120,7 +119,7 @@ for topleft, t in tiles.items():
                 for r in maprows:
                     m.append("".join(r))
 
-            # Now find the monsters!
+            # Find the monsters!
             foundmonster = 0
             for x in range(0, len(m)-len(MONSTER)):
                 for y in range(0, len(m[0])-len(MONSTER[0])):
