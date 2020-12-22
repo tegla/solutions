@@ -23,6 +23,12 @@ def v(p):
     return sum([n*c for n, c in zip(count(len(p), -1), p)])
 
 def combat(depth, p1,p2):
+    if depth > 1:
+        max1, max2, min2 = max(p1), max(p2), min(p2)
+        rl = len(p1)+len(p2) - 2 
+        if max1 > max2 and max1+min2 > rl:
+            return True
+
     p1 = deque(p1)
     p2 = deque(p2)
     #print("Combat:", depth, p1,p2)
