@@ -35,7 +35,7 @@ def combat(depth, p1,p2):
         d1 = p1.popleft()
         d2 = p2.popleft()
         if state in oldrounds:
-            p1win = True
+            return True
         elif len(p1) >= d1 and len(p2) >= d2:
             p1win = combat(depth+1, p1, p2)
         else:
