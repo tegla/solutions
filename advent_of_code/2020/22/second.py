@@ -23,15 +23,9 @@ def v(p):
     return sum([n*c for n, c in zip(count(len(p), -1), p)])
 
 def combat(depth, p1,p2):
-    if depth > 1:
-        max1, max2, min2 = max(p1), max(p2), min(p2)
-        rl = len(p1)+len(p2) - 2 
-        if max1 > max2 and max1+min2 > rl:
-            return True
-
+    #print("Combat:", depth, p1,p2)
     p1 = deque(p1)
     p2 = deque(p2)
-    #print("Combat:", depth, p1,p2)
     oldrounds = set()
     round = 0
     while len(p1) > 0 and len(p2) > 0:
@@ -43,7 +37,7 @@ def combat(depth, p1,p2):
         if state in oldrounds:
             return True
         elif len(p1) >= d1 and len(p2) >= d2:
-            p1win = combat(depth+1, p1, p2)
+            p1win = combat(depth+1, list(p1)[0:d1], list(p2)[0:d2])
         else:
             p1win = d1 > d2
 
