@@ -74,14 +74,15 @@ func (m *machine) isDependent(n1 string, n2 string) bool {
 	return m.isDependent(r[0], n2) || m.isDependent(r[2], n2)
 }
 
+// Brute force Monte Carlo Hamming distance to the rescue!
 func (m *machine) hamming() int {
 	h := 0
 	for range 1000 {
 		x := make([]bool, 45)
 		y := make([]bool, 45)
 		z := make([]bool, 46)
-		xb := rand.Intn(1 << 40)
-		yb := rand.Intn(1 << 40)
+		xb := rand.Intn(1 << 44)
+		yb := rand.Intn(1 << 44)
 		zb := xb + yb
 		for i := range 46 {
 			if (xb>>i)&1 != 0 {
@@ -97,12 +98,12 @@ func (m *machine) hamming() int {
 		vals := map[string]bool{}
 		computing := map[string]struct{}{}
 		for i := range 45 {
-			vals[fmt.Sprintf("x%02d", i)] = (i < len(x) && x[i])
-			vals[fmt.Sprintf("y%02d", i)] = (i < len(y) && y[i])
+			vals[fmt.Sprintf("x%02d", i)] = x[i]
+			vals[fmt.Sprintf("y%02d", i)] = y[i]
 		}
 		for i := range 46 {
 			zs := zName(i)
-			expected := (i < len(z) && z[i])
+			expected := z[i]
 			v, err := m.compute(vals, computing, zs)
 			if err || v != expected {
 				h++
