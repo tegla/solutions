@@ -1,7 +1,7 @@
 local s = 50
 local count = 0
 for l in io.lines('/tmp/advent01.input') do
-    local d, n = l:match("(.)(.*)")
+    local d, n = l:match("(%a)(%d+)")
     n = tonumber(n)
     for _ = 1, n do
         if d == "L" then
