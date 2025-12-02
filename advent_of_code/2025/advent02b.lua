@@ -1,40 +1,37 @@
-local stringx = require 'pl.stringx'
-local pretty = require 'pl.pretty'
-local utils = require 'pl.utils'
 local List = require 'pl.List'
-local Set = require 'pl.Set'
+local Map = require 'pl.Map'
+local seq = require 'pl.seq'
+local func = require 'pl.func'
 
 local rs = List {}
-for r in stringx.split(List(utils.readlines('/tmp/advent02.input')):join(), ","):iter() do
-    local a, b = r:match("(%d+)-(%d+)")
-    rs:append({ a = tonumber(a), b = tonumber(b) })
-end
-
-local max = 0
-for r in rs:iter() do
-    if r.b > max then
-        max = r.b
+for l in seq.lines('/tmp/advent02.input') do
+    for a, b in l:gmatch("(%d+)-(%d+)") do
+        rs:append({ a = tonumber(a), b = tonumber(b) })
     end
 end
 
-local found = Set {}
+local _, max = seq(rs):map(func._1.b):minmax()
+
+local function in_range(id)
+    for r in rs:iter() do
+        if id >= r.a and id <= r.b then
+            return true
+        end
+    end
+    return false
+end
+
+local found = Map {}
 local i = 1
-local sum = 0
 while tonumber(i .. i) <= max do
     local id = tonumber(i .. i)
     while id <= max do
-        if not found[id] then
-            for r in rs:iter() do
-                if id >= r.a and id <= r.b then
-                    found[id] = true
-                    sum = sum + id
-                    break
-                end
-            end
+        if in_range(id) then
+            found[id] = true
         end
         id = tonumber(id .. i)
     end
     i = i + 1
 end
 
-print(sum)
+print(found:keys():reduce('+'))
