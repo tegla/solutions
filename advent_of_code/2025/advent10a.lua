@@ -26,18 +26,20 @@ end
 
 local sum = 0
 for m in ms:iter() do
-    local function minswitch(l, i)
-        if l == m.lights then
-            return 0
+    local min = math.maxinteger
+    for i = 0, 1 << #m.buttons do
+        local l = 0
+        local c = 0
+        for j, b in ipairs(m.buttons) do
+            if (i >> (j - 1)) & 1 == 1 then
+                l = l ~ b
+                c = c + 1
+            end
         end
-        if i > #m.buttons then
-            return 10000000
+        if l == m.lights and c < min then
+            min = c
         end
-        return math.min(
-            minswitch(l, i + 1),
-            minswitch(l ~ m.buttons[i], i + 1) + 1
-        )
     end
-    sum = sum + minswitch(0, 1)
+    sum = sum + min
 end
 print(sum)
