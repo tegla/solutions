@@ -9,7 +9,7 @@ for l in io.lines('/tmp/advent11.input.txt') do
     g[a] = bs
 end
 
--- there's no Map in lua wi
+-- there's no Map in lua with tuples as keys
 local function make_state(server, fft, dac)
     if fft then
         fft = "#"
